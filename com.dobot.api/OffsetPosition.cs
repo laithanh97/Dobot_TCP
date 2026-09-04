@@ -41,8 +41,7 @@ namespace Dobot_TCP.com.dobot.api
 
         override public string ToString()
         {
-            string str = String.Format("{0},{1},{2},{3}",
-                this.x, this.y, this.z, this.r);
+            string str = $"{this.x},{this.y},{this.z},{this.r}";
             return str;
         }
     }

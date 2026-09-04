@@ -158,22 +158,22 @@ namespace Dobot_TCP
 
         private void DoMoveJog(string str)
         {
-            PrintLog(string.Format("send to {0}:{1}: MoveJog({2})", mDobotMove.IP, mDobotMove.Port, str));
+            PrintLog($"send to {mDobotMove.IP}:{mDobotMove.Port}: MoveJog({str})");
             Thread thd = new Thread(() =>
             {
                 string ret = mDobotMove.MoveJog(str);
-                PrintLog(string.Format("Receive From {0}:{1}: {2}", mDobotMove.IP, mDobotMove.Port, ret));
+                PrintLog($"Receive From {mDobotMove.IP}:{mDobotMove.Port}: {ret}");
             });
             thd.Start();
         }
 
         private void DoStopMoveJog()
         {
-            PrintLog(string.Format("send to {0}:{1}: MoveJog()", mDobotMove.IP, mDobotMove.Port));
+            PrintLog($"send to {mDobotMove.IP}:{mDobotMove.Port}: MoveJog()");
             Thread thd = new Thread(() =>
             {
                 string ret = mDobotMove.StopMoveJog();
-                PrintLog(string.Format("Receive From {0}:{1}: {2}", mDobotMove.IP, mDobotMove.Port, ret));
+                PrintLog($"Receive From {mDobotMove.IP}:{mDobotMove.Port}: {ret}");
             });
             thd.Start();
         }
@@ -280,19 +280,19 @@ namespace Dobot_TCP
             {
                 if (!mDashboard.Connect(strIp, iPortDashboard))
                 {
-                    PrintLog(string.Format("Connect {0}:{1} Fail!!", strIp, iPortDashboard));
+                    PrintLog($"Connect {strIp}:{iPortDashboard} Fail!!");
                     Invoke(new Action(() => { foreach (Control ctr in this.groupBoxConnect.Controls) ctr.Enabled = true; }));
                     return;
                 }
                 if (!mDobotMove.Connect(strIp, iPortMove))
                 {
-                    PrintLog(string.Format("Connect {0}:{1} Fail!!", strIp, iPortMove));
+                    PrintLog($"Connect {strIp}:{iPortMove} Fail!!");
                     Invoke(new Action(() => { foreach (Control ctr in this.groupBoxConnect.Controls) ctr.Enabled = true; }));
                     return;
                 }
                 if (!mFeedback.Connect(strIp, iPortFeedback))
                 {
-                    PrintLog(string.Format("Connect {0}:{1} Fail!!", strIp, iPortFeedback));
+                    PrintLog($"Connect {strIp}:{iPortFeedback} Fail!!");
                     Invoke(new Action(() => { foreach (Control ctr in this.groupBoxConnect.Controls) ctr.Enabled = true; }));
                     return;
                 }
@@ -353,41 +353,41 @@ namespace Dobot_TCP
                     }
                 }));
 
-                PrintLog(string.Format("Receive From {0}:{1}: {2}", mDashboard.IP, mDashboard.Port, ret));
+                PrintLog($"Receive From {mDashboard.IP}:{mDashboard.Port}: {ret}");
             });
             thd.Start();
         }
 
         private void btnEnableAgain_Click(object sender, EventArgs e)
         {
-            PrintLog(string.Format("send to {0}:{1}: {2}()", mDashboard.IP, mDashboard.Port, "EnableRobot"));
+            PrintLog($"send to {mDashboard.IP}:{mDashboard.Port}: EnableRobot()");
             Thread thd = new Thread(() =>
             {
                 string ret = mDashboard.EnableRobot();
                 bool bOk = ret.StartsWith("0");
-                PrintLog(string.Format("Receive From {0}:{1}: {2}", mDashboard.IP, mDashboard.Port, ret));
+                PrintLog($"Receive From {mDashboard.IP}:{mDashboard.Port}: {ret}");
             });
             thd.Start();
         }
 
         private void btnResetRobot_Click(object sender, EventArgs e)
         {
-            PrintLog(string.Format("send to {0}:{1}: ResetRobot()", mDashboard.IP, mDashboard.Port));
+            PrintLog($"send to {mDashboard.IP}:{mDashboard.Port}: ResetRobot()");
             Thread thd = new Thread(() =>
             {
                 string ret = mDashboard.ResetRobot();
-                PrintLog(string.Format("Receive From {0}:{1}: {2}", mDashboard.IP, mDashboard.Port, ret));
+                PrintLog($"Receive From {mDashboard.IP}:{mDashboard.Port}: {ret}");
             });
             thd.Start();
         }
 
         private void btnClearError_Click(object sender, EventArgs e)
         {
-            PrintLog(string.Format("send to {0}:{1}: ClearError()", mDashboard.IP, mDashboard.Port));
+            PrintLog($"send to {mDashboard.IP}:{mDashboard.Port}: ClearError()");
             Thread thd = new Thread(() =>
             {
                 string ret = mDashboard.ClearError();
-                PrintLog(string.Format("Receive From {0}:{1}: {2}", mDashboard.IP, mDashboard.Port, ret));
+                PrintLog($"Receive From {mDashboard.IP}:{mDashboard.Port}: {ret}");
             });
             thd.Start();
         }
@@ -405,7 +405,7 @@ namespace Dobot_TCP
                 Thread thd = new Thread(() =>
                 {
                     string ret = mDashboard.DigitalOutputs(idx, !bIsOn);
-                    PrintLog(string.Format("Receive From {0}:{1}: {2}", mDashboard.IP, mDashboard.Port, ret));
+                    PrintLog($"Receive From {mDashboard.IP}:{mDashboard.Port}: {ret}");
                 });
                 thd.Start();
             }
@@ -425,7 +425,7 @@ namespace Dobot_TCP
                 }
                 else
                 {
-                    DialogResult result = MessageBox.Show($"Get the real input signal {idx}?", "CONFIRM", MessageBoxButtons.OKCancel, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1);
+                    DialogResult result = MessageBox.Show($"Return the real input signal {idx}?", "CONFIRM", MessageBoxButtons.OKCancel, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1);
                     if (result == DialogResult.Cancel) return;
                     isRealInput[idx] = true;
                 }
@@ -438,52 +438,58 @@ namespace Dobot_TCP
 
         private void ShowDataResult()
         {
-            this.labCurrentSpeedRatio.Text = string.Format("Current Speed Ratio:{0:F0}%", mFeedback.feedbackData.SpeedScaling);
-            this.labRobotMode.Text = string.Format("Robot Mode:{0}", mFeedback.ConvertRobotMode());
+            this.labCurrentSpeedRatio.Text = $"Current Speed Ratio:{mFeedback.feedbackData.SpeedScaling:F0}%";
+            this.labRobotMode.Text = $"Robot Mode:{mFeedback.ConvertRobotMode()}";
             this.btnEnable.Text = mFeedback.IsEnabled() ? "Disable" : "Enable";
             this.lblTest.Text = "Test 64 bit block: 0x" + Convert.ToString(mFeedback.feedbackData.TestValue, 16).PadLeft(16, '0');
             if (trackBarSpeed.Value == 0) trackBarSpeed.Value = (int)mFeedback.feedbackData.SpeedScaling;
             lblSpeed.Text = trackBarSpeed.Value.ToString();
             if (null != mFeedback.feedbackData.QActual && mFeedback.feedbackData.QActual.Length >= 4)
             {
-                this.labJ1.Text = string.Format("J1:{0:F3}", mFeedback.feedbackData.QActual[0]);
-                this.labJ2.Text = string.Format("J2:{0:F3}", mFeedback.feedbackData.QActual[1]);
-                this.labJ3.Text = string.Format("J3:{0:F3}", mFeedback.feedbackData.QActual[2]);
-                this.labJ4.Text = string.Format("J4:{0:F3}", mFeedback.feedbackData.QActual[3]);
+                this.labJ1.Text = $"J1:{mFeedback.feedbackData.QActual[0]:F3}";
+                this.labJ2.Text = $"J2:{mFeedback.feedbackData.QActual[1]:F3}";
+                this.labJ3.Text = $"J3:{mFeedback.feedbackData.QActual[2]:F3}";
+                this.labJ4.Text = $"J4:{mFeedback.feedbackData.QActual[3]:F3}";
 
                 if (textBoxJ1.Text.Length == 0)
                 {//第一次填充数据，免得用的时候一个一个输入
-                    this.textBoxJ1.Text = string.Format("{0:F3}", mFeedback.feedbackData.QActual[0]);
-                    this.textBoxJ2.Text = string.Format("{0:F3}", mFeedback.feedbackData.QActual[1]);
-                    this.textBoxJ3.Text = string.Format("{0:F3}", mFeedback.feedbackData.QActual[2]);
-                    this.textBoxJ4.Text = string.Format("{0:F3}", mFeedback.feedbackData.QActual[3]);
+                    this.textBoxJ1.Text = $"{mFeedback.feedbackData.QActual[0]:F3}";
+                    this.textBoxJ2.Text = $"{mFeedback.feedbackData.QActual[1]:F3}";
+                    this.textBoxJ3.Text = $"{mFeedback.feedbackData.QActual[2]:F3}";
+                    this.textBoxJ4.Text = $"{mFeedback.feedbackData.QActual[3]:F3}";
                 }
             }
 
             if (null != mFeedback.feedbackData.ToolVectorActual && mFeedback.feedbackData.ToolVectorActual.Length >= 4)
             {
-                this.labX.Text = string.Format("X:{0:F3}", mFeedback.feedbackData.ToolVectorActual[0]);
-                this.labY.Text = string.Format("Y:{0:F3}", mFeedback.feedbackData.ToolVectorActual[1]);
-                this.labZ.Text = string.Format("Z:{0:F3}", mFeedback.feedbackData.ToolVectorActual[2]);
-                this.labRx.Text = string.Format("R:{0:F3}", mFeedback.feedbackData.ToolVectorActual[3]);
+                this.labX.Text = $"X:{mFeedback.feedbackData.ToolVectorActual[0]:F3}";
+                this.labY.Text = $"Y:{mFeedback.feedbackData.ToolVectorActual[1]:F3}";
+                this.labZ.Text = $"Z:{mFeedback.feedbackData.ToolVectorActual[2]:F3}";
+                this.labRx.Text = $"R:{mFeedback.feedbackData.ToolVectorActual[3]:F3}";
 
                 if (textBoxX.Text.Length == 0)
                 {//第一次填充数据，免得用的时候一个一个输入
-                    this.textBoxX.Text = string.Format("{0:F3}", mFeedback.feedbackData.ToolVectorActual[0]);
-                    this.textBoxY.Text = string.Format("{0:F3}", mFeedback.feedbackData.ToolVectorActual[1]);
-                    this.textBoxZ.Text = string.Format("{0:F3}", mFeedback.feedbackData.ToolVectorActual[2]);
-                    this.textBoxRx.Text = string.Format("{0:F3}", mFeedback.feedbackData.ToolVectorActual[3]);
+                    this.textBoxX.Text = $"{mFeedback.feedbackData.ToolVectorActual[0]:F3}";
+                    this.textBoxY.Text = $"{mFeedback.feedbackData.ToolVectorActual[1]:F3}";
+                    this.textBoxZ.Text = $"{mFeedback.feedbackData.ToolVectorActual[2]:F3}";
+                    this.textBoxRx.Text = $"{mFeedback.feedbackData.ToolVectorActual[3]:F3}";
                 }
             }
             string DIstring = Convert.ToString(mFeedback.feedbackData.DigitalInputs, 2).PadLeft(64, '0');
             string DOstring = Convert.ToString(mFeedback.feedbackData.DigitalOutputs, 2).PadLeft(64, '0');
             foreach (Button btn in groupBoxInput.Controls.OfType<Button>())
             {
-                //if (isRealInput[int.Parse(btn.Tag.ToString())])
+                int idx = int.Parse(btn.Tag.ToString());
+                if (isRealInput[idx])
                 {
-                    btn.Text = (DIstring[DIstring.Length - int.Parse(btn.Tag.ToString())] == '1') ? "ON" : "OFF";
+                    btn.Text = (DIstring[DIstring.Length - idx] == '1') ? "ON" : "OFF";
                     btn.BackColor = (btn.Text == "ON") ? Color.LightGreen : Color.Transparent;
                 }
+                else
+                {
+					btn.Text = "SIM";
+					btn.BackColor = Color.LightBlue;
+				}
             }
             if (groupBoxConnect.Tag == null)
             {
@@ -534,8 +540,7 @@ namespace Dobot_TCP
             if (sb.Length > 0)
             {
                 DateTime dt = DateTime.Now;
-                string strTime = string.Format("Time Stamp:{0}.{1}.{2} {3}:{4}:{5}", dt.Year,
-                    dt.Month, dt.Day, dt.Hour, dt.Minute, dt.Second);
+                string strTime = $"Time Stamp:{dt.Year}.{dt.Month}.{dt.Day} {dt.Hour}:{dt.Minute}:{dt.Second}";
                 PrintErrorInfo(strTime + "\r\n" + sb.ToString());
             }
             return;
@@ -581,21 +586,21 @@ namespace Dobot_TCP
                 {
                     if (!isRelative)
                     {
-                        PrintLog(string.Format("send to {0}:{1}: MovJ({2})", mDobotMove.IP, mDobotMove.Port, pt.ToString()));
+                        PrintLog($"send to {mDobotMove.IP}:{mDobotMove.Port}: MovJ({pt.ToString()})");
                         Thread thd = new Thread(() =>
                         {
                             string ret = mDobotMove.MovJ(pt);
-                            PrintLog(string.Format("Receive From {0}:{1}: {2}", mDobotMove.IP, mDobotMove.Port, ret));
+                            PrintLog($"Receive From {mDobotMove.IP}:{mDobotMove.Port}: {ret}");
                         });
                         thd.Start();
                     }
                     else
                     {
-                        PrintLog(string.Format("send to {0}:{1}: RelMovJUser({2})", mDobotMove.IP, mDobotMove.Port, pt.ToString()));
+                        PrintLog($"send to {mDobotMove.IP}:{mDobotMove.Port}: RelMovJUser({pt.ToString()})");
                         Thread thd = new Thread(() =>
                         {
                             string ret = mDobotMove.RelMovJUser(opt);
-                            PrintLog(string.Format("Receive From {0}:{1}: {2}", mDobotMove.IP, mDobotMove.Port, ret));
+                            PrintLog($"Receive From {mDobotMove.IP}:{mDobotMove.Port}: {ret}");
                         });
                         thd.Start();
                     }
@@ -605,21 +610,21 @@ namespace Dobot_TCP
                 {
                     if (!isRelative)
                     {
-                        PrintLog(string.Format("send to {0}:{1}: MovL({2})", mDobotMove.IP, mDobotMove.Port, pt.ToString()));
+                        PrintLog($"send to {mDobotMove.IP}:{mDobotMove.Port}: MovL({pt.ToString()})");
                         Thread thd = new Thread(() =>
                         {
                             string ret = mDobotMove.MovL(pt);
-                            PrintLog(string.Format("Receive From {0}:{1}: {2}", mDobotMove.IP, mDobotMove.Port, ret));
+                            PrintLog($"Receive From {mDobotMove.IP}:{mDobotMove.Port}: {ret}");
                         });
                         thd.Start();
                     }
                     else
                     {
-                        PrintLog(string.Format("send to {0}:{1}: RelMovLUser({2})", mDobotMove.IP, mDobotMove.Port, pt.ToString()));
+                        PrintLog($"send to {mDobotMove.IP}:{mDobotMove.Port}: RelMovLUser({pt.ToString()}");
                         Thread thd = new Thread(() =>
                         {
                             string ret = mDobotMove.RelMovLUser(opt);
-                            PrintLog(string.Format("Receive From {0}:{1}: {2}", mDobotMove.IP, mDobotMove.Port, ret));
+                            PrintLog($"Receive From {mDobotMove.IP}:{mDobotMove.Port}: {ret}");
                         });
                         thd.Start();
                     }
@@ -629,21 +634,21 @@ namespace Dobot_TCP
                 {
                     if (!isRelative)
                     {
-                        PrintLog(string.Format("send to {0}:{1}: JointMovJ({2})", mDobotMove.IP, mDobotMove.Port, pt.ToString()));
+                        PrintLog($"send to {mDobotMove.IP}:{mDobotMove.Port}: JointMovJ({pt.ToString()})");
                         Thread thd = new Thread(() =>
                         {
                             string ret = mDobotMove.JointMovJ(jpt);
-                            PrintLog(string.Format("Receive From {0}:{1}: {2}", mDobotMove.IP, mDobotMove.Port, ret));
+                            PrintLog($"Receive From {mDobotMove.IP}:{mDobotMove.Port}: {ret}");
                         });
                         thd.Start();
                     }
                     else
                     {
-                        PrintLog(string.Format("send to {0}:{1}: RelJointMovJ({2})", mDobotMove.IP, mDobotMove.Port, pt.ToString()));
+                        PrintLog($"send to {mDobotMove.IP}:{mDobotMove.Port}: RelJointMovJ({pt.ToString()})");
                         Thread thd = new Thread(() =>
                         {
                             string ret = mDobotMove.RelJointMovJ(ojpt);
-                            PrintLog(string.Format("Receive From {0}:{1}: {2}", mDobotMove.IP, mDobotMove.Port, ret));
+                            PrintLog($"Receive From {mDobotMove.IP}:{mDobotMove.Port}: {ret}");
                         });
                         thd.Start();
                     }
@@ -667,14 +672,14 @@ namespace Dobot_TCP
             else
             {
                 btnRel.Text = "Absolute";
-                this.textBoxJ1.Text = string.Format("{0:F3}", mFeedback.feedbackData.QActual[0]);
-                this.textBoxJ2.Text = string.Format("{0:F3}", mFeedback.feedbackData.QActual[1]);
-                this.textBoxJ3.Text = string.Format("{0:F3}", mFeedback.feedbackData.QActual[2]);
-                this.textBoxJ4.Text = string.Format("{0:F3}", mFeedback.feedbackData.QActual[3]);
-                this.textBoxX.Text = string.Format("{0:F3}", mFeedback.feedbackData.ToolVectorActual[0]);
-                this.textBoxY.Text = string.Format("{0:F3}", mFeedback.feedbackData.ToolVectorActual[1]);
-                this.textBoxZ.Text = string.Format("{0:F3}", mFeedback.feedbackData.ToolVectorActual[2]);
-                this.textBoxRx.Text = string.Format("{0:F3}", mFeedback.feedbackData.ToolVectorActual[3]);
+                this.textBoxJ1.Text = $"{mFeedback.feedbackData.QActual[0]:F3}";
+                this.textBoxJ2.Text = $"{mFeedback.feedbackData.QActual[1]:F3}";
+                this.textBoxJ3.Text = $"{mFeedback.feedbackData.QActual[2]:F3}";
+                this.textBoxJ4.Text = $"{mFeedback.feedbackData.QActual[3]:F3}";
+                this.textBoxX.Text = $"{mFeedback.feedbackData.ToolVectorActual[0]:F3}";
+                this.textBoxY.Text = $"{mFeedback.feedbackData.ToolVectorActual[1]:F3}";
+                this.textBoxZ.Text = $"{mFeedback.feedbackData.ToolVectorActual[2]:F3}";
+                this.textBoxRx.Text = $"{mFeedback.feedbackData.ToolVectorActual[3]:F3}";
             }
         }
 
@@ -716,21 +721,21 @@ namespace Dobot_TCP
                 }
                 if (isMotionCmd)
                 {
-                    PrintLog(string.Format("send to {0}:{1}: {2}", mDobotMove.IP, mDobotMove.Port, cmd));
+                    PrintLog($"send to {mDobotMove.IP}:{mDobotMove.Port}: {cmd}");
                     Thread thd = new Thread(() =>
                     {
                         string ret = mDobotMove.CustomCommand(cmd);
-                        PrintLog(string.Format("Receive From {0}:{1}: {2}", mDobotMove.IP, mDobotMove.Port, ret));
+                        PrintLog($"Receive From {mDobotMove.IP}:{mDobotMove.Port}: {ret}");
                     });
                     thd.Start();
                 }
                 else
                 {
-                    PrintLog(string.Format("send to {0}:{1}: {2}", mDashboard.IP, mDashboard.Port, cmd));
+                    PrintLog($"send to {mDashboard.IP}:{mDashboard.Port}: {cmd}");
                     Thread thd = new Thread(() =>
                     {
                         string ret = mDashboard.CustomCommand(cmd);
-                        PrintLog(string.Format("Receive From {0}:{1}: {2}", mDashboard.IP, mDashboard.Port, ret));
+                        PrintLog($"Receive From {mDashboard.IP}:{mDashboard.Port}: {ret}");
                     });
                     thd.Start();
                 }
@@ -785,11 +790,11 @@ namespace Dobot_TCP
             int iValue = this.trackBarSpeed.Value;
             if (iValue > 0)
             {
-                PrintLog(string.Format("send to {0}:{1}: SpeedFactor({1})", mDashboard.IP, mDashboard.Port, iValue));
+                PrintLog($"send to {mDashboard.IP}:{mDashboard.Port}: SpeedFactor({iValue})");
                 Thread thd = new Thread(() =>
                 {
                     string ret = mDashboard.SpeedFactor(iValue);
-                    PrintLog(string.Format("Receive From {0}:{1}: {2}", mDashboard.IP, mDashboard.Port, ret));
+                    PrintLog($"Receive From {mDashboard.IP}:{mDashboard.Port}: {ret}");
                 });
                 thd.Start();
             }

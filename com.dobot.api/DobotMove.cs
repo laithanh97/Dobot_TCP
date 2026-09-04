@@ -75,7 +75,7 @@ namespace Dobot_TCP.com.dobot.api
             {
                 return "send error:invalid parameter!!!";
             }
-            string str = String.Format("MovJ({0},{1},{2},{3})", pt.x, pt.y, pt.z, pt.r);
+            string str = $"MovJ({pt.x},{pt.y},{pt.z},{pt.z})";
 			return !SendData(str) ? str + ":send error" : WaitReply(5000);
 		}
 
@@ -94,7 +94,7 @@ namespace Dobot_TCP.com.dobot.api
             {
                 return "send error:invalid parameter!!!";
             }
-            string str = String.Format("MovL({0},{1},{2},{3})", pt.x, pt.y, pt.z, pt.r);
+            string str = $"MovL({pt.x},{pt.y},{pt.z},{pt.r})";
 			return !SendData(str) ? str + ":send error" : WaitReply(5000);
 		}
 
@@ -113,7 +113,7 @@ namespace Dobot_TCP.com.dobot.api
             {
                 return "send error:invalid parameter!!!";
             }
-            string str = String.Format("JointMovJ({0},{1},{2},{3})", pt.j1, pt.j2, pt.j3, pt.j4);
+            string str = $"JointMovJ({pt.j1},{pt.j2},{pt.j3},{pt.j4})";
 			return !SendData(str) ? str + ":send error" : WaitReply(5000);
 		}
 		/// <summary>
@@ -132,7 +132,7 @@ namespace Dobot_TCP.com.dobot.api
             {
                 return "send error:invalid parameter!!!";
             }
-            string str = String.Format("RelMovJUser({0},{1},{2},{3},0,0,{4})", pt.x, pt.y, pt.z, pt.r, pt.user);
+            string str = $"RelMovJUser({pt.x},{pt.y},{pt.z},{pt.r},0,0,{pt.user})";
 			return !SendData(str) ? str + ":send error" : WaitReply(5000);
 		}
 
@@ -151,7 +151,7 @@ namespace Dobot_TCP.com.dobot.api
             {
                 return "send error:invalid parameter!!!";
             }
-            string str = String.Format("RelMovLUser({0},{1},{2},{3},0,0,{4})", pt.x, pt.y, pt.z, pt.r, pt.user);
+            string str = $"RelMovLUser({pt.x},{pt.y},{pt.z},{pt.r},0,0,{pt.user})";
 			return !SendData(str) ? str + ":send error" : WaitReply(5000);
 		}
 
@@ -170,7 +170,7 @@ namespace Dobot_TCP.com.dobot.api
             {
                 return "send error:invalid parameter!!!";
             }
-            string str = String.Format("RelJointMovJ({0},{1},{2},{3},0,0)", pt.x, pt.y, pt.z, pt.r);
+            string str = $"RelJointMovJ({pt.x},{pt.y},{pt.z},{pt.r},0,0)";
 			return !SendData(str) ? str + ":send error" : WaitReply(5000);
 		}
 		public string CustomCommand(string str)

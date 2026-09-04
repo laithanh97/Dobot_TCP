@@ -101,7 +101,7 @@ namespace Dobot_TCP.com.dobot.api
         public string SpeedFactor(int ratio)
         {
             if (!IsConnected()) return "device does not connected!!!";
-            string str = String.Format("SpeedFactor({0})", ratio);
+            string str = $"SpeedFactor({ratio})";
             return !SendData(str) ? str + ":send error" : WaitReply(5000);
         }
 

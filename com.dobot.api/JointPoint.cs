@@ -35,8 +35,7 @@ namespace Dobot_TCP.com.dobot.api
 
         override public string ToString()
         {
-            string str = String.Format("{0},{1},{2},{3}",
-                this.j1, this.j2, this.j3, this.j4);
+            string str = $"{this.j1},{this.j2},{this.j3},{this.j4}";
             return str;
         }
     }

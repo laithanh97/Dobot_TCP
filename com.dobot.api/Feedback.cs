@@ -468,7 +468,7 @@ namespace Dobot_TCP.com.dobot.api
                 case FeedbackData.ROBOT_MODE_JOG:
                     return "ROBOT_MODE_JOG";
             }
-            return string.Format("UNKNOWN：RobotMode={0}", feedbackData.RobotMode);
+            return $"UNKNOWN：RobotMode={feedbackData.RobotMode}";
         }
 
         public bool IsEnabled()
